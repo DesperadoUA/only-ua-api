@@ -6,7 +6,7 @@ use Carbon_Fields\Field;
 add_action('carbon_fields_register_fields', 'meta_fields');
 function meta_fields()
 {
-    $arrPostTypes = ['posts', 'page', 'casino', 'blog', 'payment', 'vendor'];
+    $arrPostTypes = ['posts', 'page', 'casino', 'game'];
     /*--------------------------Add fields on posts----------------------------------------*/
     Container::make('post_meta', 'Post Meta')
         ->show_on_post_type($arrPostTypes)
@@ -20,7 +20,7 @@ function meta_fields()
 add_action('carbon_fields_register_fields', 'headers_meta_lang');
 function headers_meta_lang()
 {
-    $arrPostTypes = ['posts', 'page', 'casino', 'blog', 'payment', 'vendor'];
+    $arrPostTypes = ['posts', 'page', 'casino', 'game'];
     /*--------------------------Add fields on posts----------------------------------------*/
     Container::make('post_meta', 'Headers Meta Lang')
         ->show_on_post_type($arrPostTypes)
