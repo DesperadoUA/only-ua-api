@@ -1,29 +1,3 @@
-<?php
-/*
-$posts = get_posts([
-    'numberposts' => -1,
-    'post_type' => 'payment'
-]);
-
-foreach ($posts as $item) {
-    echo $item->ID;
-    echo "<pre>";
-    var_dump(carbon_get_post_meta($item->ID, 'headers_meta_lang'));
-    echo "</pre>";
-}
-
-
-foreach($posts as $item) {
-  $obj = carbon_get_post_meta($item->ID, 'headers_meta_lang');
- 	for($i=0; $i<count($obj); $i++) {
-           $new_link = str_replace('uk-media', 'uk', $obj[$i]['headers_link']);
-	   $link =  str_replace('https://media.', 'https://', $new_link);
-	   carbon_set_post_meta( $item->ID, "headers_meta_lang[{$i}]/headers_link", $link );
-	}
-}
-*/
-?>
-
 <!doctype html>
 <html lang="en">
 <head>

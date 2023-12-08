@@ -1,9 +1,10 @@
 <?php
+define('ROOT_DIR', __DIR__);
+include 'inc/helpers.php';
 include 'inc/headers.php';
 include 'inc/post_types/casino.php';
-include 'inc/post_types/blog.php';
-include 'inc/post_types/payments.php';
-include 'inc/post_types/vendors.php';
+include 'inc/post_types/bonus.php';
+include 'inc/post_types/game.php';
 include 'components/index.php';
 add_theme_support( 'post-thumbnails' );
 add_theme_support('menus');

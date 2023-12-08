@@ -3,7 +3,6 @@ include 'meta_fields.php';
 include 'amp_content.php';
 include 'h1.php';
 include 'relative_payments.php';
-include 'relative_pay_out.php';
 include 'relative_vendors.php';
 include 'casino/fields.php';
 include 'blog/fields.php';

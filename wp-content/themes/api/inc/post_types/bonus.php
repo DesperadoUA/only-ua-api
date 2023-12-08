@@ -1,11 +1,11 @@
 <?php
-add_action( 'init', 'register_post_types_payment' );
-function register_post_types_payment(){
-    register_post_type( 'payment', [
+add_action( 'init', 'register_post_types_bonus' );
+function register_post_types_bonus(){
+    register_post_type( 'bonus', [
         'label'  => null,
         'labels' => [
-            'name'               => 'Payments', // основное название для типа записи
-            'singular_name'      => 'payment', // название для одной записи этого типа
+            'name'               => 'Bonus', // основное название для типа записи
+            'singular_name'      => 'bonus', // название для одной записи этого типа
             'add_new'            => 'Добавить статью', // для добавления новой записи
             'add_new_item'       => 'Добавление статьи', // заголовка у вновь создаваемой записи в админ-панели.
             'edit_item'          => 'Редактирование статьи', // для редактирования типа записи
@@ -15,7 +15,7 @@ function register_post_types_payment(){
             'not_found'          => 'Не найдено', // если в результате поиска ничего не было найдено
             'not_found_in_trash' => 'Не найдено в корзине', // если не было найдено в корзине
             'parent_item_colon'  => '', // для родителей (у древовидных типов)
-            'menu_name'          => 'Payments', // название меню
+            'menu_name'          => 'Bonus', // название меню
         ],
         'description'         => '',
         'public'              => true,
@@ -24,7 +24,7 @@ function register_post_types_payment(){
         'show_in_rest'        => null, // добавить в REST API. C WP 4.7
         'rest_base'           => null, // $post_type. C WP 4.7
         'menu_position'       => null,
-        'menu_icon'           => 'dashicons-admin-generic',
+        'menu_icon'           => 'dashicons-book',
         'hierarchical'        => false,
         'supports'            => ['title','thumbnail','excerpt','comments','revisions','page-attributes','post-formats', 'editor'],
         'taxonomies'          => array( 'category' ),
@@ -33,7 +33,7 @@ function register_post_types_payment(){
         'query_var'           => true,
     ] );
 }
-function payment_custom_fields() {
-    add_post_type_support( 'payment', 'custom-fields'); // в качестве первого параметра укажите название типа поста
+function bonus_custom_fields() {
+    add_post_type_support( 'bonus', 'custom-fields'); // в качестве первого параметра укажите название типа поста
 }
-add_action('init', 'payment_custom_fields');
+add_action('init', 'bonus_custom_fields');
