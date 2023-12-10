@@ -40,23 +40,6 @@ function parseAmpContent($content) {
     return $content;
 }
 /* Post cards */
-function get_blog_card_data($arr_id) {
-    if(empty($arr_id)) return [];
-    $data = [];
-    foreach ($arr_id as $id) {
-        $item = get_post($id);
-        $data[] = [
-            'id' => $id,
-            'permalink' => get_short_link($id),
-            'thumbnail' => get_the_post_thumbnail_url($id, 'full'),
-            'author'    => carbon_get_post_meta($id, 'post_author'),
-            'title'     => get_the_title($id),
-            'excerpt'   => $item->post_excerpt,
-            'date'      => $item->post_date
-        ];
-    }
-    return $data;
-}
 function get_casino_card_data($arr_id) {
     $data_posts = [];
     foreach ($arr_id as $item) {
@@ -84,33 +67,6 @@ function get_casino_card_data($arr_id) {
 /* Post cards end */
 
 /* Single posts */
-function get_single_blog_data($id){
-    $data_post = [];
-    $current_data = get_post($id);
-    if(!empty($current_data)) {
-        $amp_text = carbon_get_post_meta($current_data->ID, 'amp_content');
-        $amp_text = empty($amp_text) ? parseAmpContent($current_data->post_content) : parseAmpContent($amp_text);
-        $data_posts = [
-            'id'               => $current_data->ID,
-            'title'            => $current_data->post_title,
-            'meta_title'       => carbon_get_post_meta($current_data->ID, 'meta_title'),
-            'meta_description' => carbon_get_post_meta($current_data->ID, 'meta_description'),
-            'meta_keywords'    => carbon_get_post_meta($current_data->ID, 'meta_keywords'),
-            'h1'               => carbon_get_post_meta($current_data->ID, 'h1'),
-            'content'          => $current_data->post_content,
-            'amp_content'      => $amp_text,
-            'reviews'          => carbon_get_post_meta($current_data->ID, 'reviews_casino'),
-            'author'           => carbon_get_post_meta($current_data->ID, 'post_author'),
-            'date'             => $current_data->post_date,
-            'date_modified'    => $current_data->post_modified,
-            'thumbnail'        => get_the_post_thumbnail_url($current_data->ID, 'full'),
-            'description_site' => get_bloginfo(),
-            'hreflang'         => get_headers_lang($current_data->ID)
-        ];
-        return $data_posts;
-    }
-    return $data_post;
-}
 function get_single_casino_data($id){
     $data_post = [];
     $current_data = get_post($id);
@@ -189,103 +145,26 @@ function get_single_casino_data($id){
     }
     return $data_post;
 }
-function get_single_payment_data($id){
+function get_single_game_data($id){
     $data_post = [];
     $current_data = get_post($id);
     if(!empty($current_data)) {
         $amp_text = carbon_get_post_meta($current_data->ID, 'amp_content');
         $amp_text = empty($amp_text) ? parseAmpContent($current_data->post_content) : parseAmpContent($amp_text);
-        $casino = [];
-        $query = new WP_Query( array(
-            'posts_per_page' => -1,
-            'post_type'    => 'casino',
-            'post_status'  => 'publish',
-            'meta_query' => array(
-                'relative' => array(
-                    'key'   => '_relative_payment',
-                    'value' => $id,
-                ),
-                'rating' => array(
-                    'key'  => '_rating',
-                    'type' => 'NUMERIC'
-                )
-            ),
-            'orderby' => ['rating'=>'DESC']
-        ));
-        if(!empty($query->posts)) {
-            $arr_id = [];
-            foreach ($query->posts as $item) $arr_id[] = $item->ID;
-            $casino = get_casino_card_data($arr_id);
-        }
 
         $data_posts = [
-            'id'               => $current_data->ID,
-            'title'            => $current_data->post_title,
-            'meta_title'       => carbon_get_post_meta($current_data->ID, 'meta_title'),
-            'meta_description' => carbon_get_post_meta($current_data->ID, 'meta_description'),
-            'meta_keywords'    => carbon_get_post_meta($current_data->ID, 'meta_keywords'),
-            'h1'               => carbon_get_post_meta($current_data->ID, 'h1'),
-            'thumbnail'        => get_the_post_thumbnail_url($current_data->ID, 'full'),
-            'faq_title'        => carbon_get_post_meta($current_data->ID, 'faq_title'),
-            'faq'              => carbon_get_post_meta($current_data->ID, 'faq'),
-            'content'          => $current_data->post_content,
-            'amp_content'      => $amp_text,
-            'date'             => $current_data->post_date,
-            'date_modified'    => $current_data->post_modified,
-            'casino'           => $casino,
-            'description_site' => get_bloginfo(),
-            'hreflang'         => get_headers_lang($current_data->ID)
-        ];
-        return $data_posts;
-    }
-    return $data_post;
-}
-function get_single_vendor_data($id){
-    $data_post = [];
-    $current_data = get_post($id);
-    if(!empty($current_data)) {
-        $amp_text = carbon_get_post_meta($current_data->ID, 'amp_content');
-        $amp_text = empty($amp_text) ? parseAmpContent($current_data->post_content) : parseAmpContent($amp_text);
-        $casino = [];
-        $query = new WP_Query( array(
-            'posts_per_page' => -1,
-            'post_type'    => 'casino',
-            'post_status'  => 'publish',
-            'meta_query' => array(
-                'relative' => array(
-                    'key'   => '_relative_vendor',
-                    'value' => $id,
-                ),
-                'rating' => array(
-                    'key'  => '_rating',
-                    'type' => 'NUMERIC'
-                )
-            ),
-            'orderby' => ['rating'=>'DESC']
-        ));
-        if(!empty($query->posts)) {
-            $arr_id = [];
-            foreach ($query->posts as $item) $arr_id[] = $item->ID;
-            $casino = get_casino_card_data($arr_id);
-        }
-
-        $data_posts = [
-            'id'               => $current_data->ID,
-            'title'            => $current_data->post_title,
-            'meta_title'       => carbon_get_post_meta($current_data->ID, 'meta_title'),
-            'meta_description' => carbon_get_post_meta($current_data->ID, 'meta_description'),
-            'meta_keywords'    => carbon_get_post_meta($current_data->ID, 'meta_keywords'),
-            'h1'               => carbon_get_post_meta($current_data->ID, 'h1'),
-            'thumbnail'        => get_the_post_thumbnail_url($current_data->ID, 'full'),
-            'faq_title'        => carbon_get_post_meta($current_data->ID, 'faq_title'),
-            'faq'              => carbon_get_post_meta($current_data->ID, 'faq'),
-            'content'          => $current_data->post_content,
-            'amp_content'      => $amp_text,
-            'date'             => $current_data->post_date,
-            'date_modified'    => $current_data->post_modified,
-            'casino'           => $casino,
-            'description_site' => get_bloginfo(),
-            'hreflang'         => get_headers_lang($current_data->ID)
+            'id'                      => $current_data->ID,
+            'title'                   => $current_data->post_title,
+            'meta_title'              => carbon_get_post_meta($current_data->ID, 'meta_title'),
+            'meta_description'        => carbon_get_post_meta($current_data->ID, 'meta_description'),
+            'meta_keywords'           => carbon_get_post_meta($current_data->ID, 'meta_keywords'),
+            'h1'                      => carbon_get_post_meta($current_data->ID, 'h1'),
+            'content'                 => $current_data->post_content,
+            'amp_content'             => $amp_text,
+            'thumbnail'               => get_the_post_thumbnail_url($current_data->ID, 'full'),
+            'date'                    => $current_data->post_date,
+            'date_modified'           => $current_data->post_modified,
+            'hreflang'                => get_headers_lang($current_data->ID)
         ];
         return $data_posts;
     }
@@ -344,19 +223,6 @@ function get_public_post_id($post_type) {
                 'key' => '_rating',
             )
         ),
-    ));
-    if(empty($query->posts)) return $arr_id;
-    foreach ($query->posts as $item ) $arr_id[] = $item->ID;
-    return $arr_id;
-}
-function get_public_blog_id() {
-    $arr_id = [];
-    $query = new WP_Query( array(
-        'posts_per_page' => -1,
-        'post_type'    => 'blog',
-        'post_status'  => 'publish',
-        'orderby' => 'date',
-        'order'   => 'DESC',
     ));
     if(empty($query->posts)) return $arr_id;
     foreach ($query->posts as $item ) $arr_id[] = $item->ID;
