@@ -11,5 +11,4 @@ include 'marker.php';
 include 'ref.php';
 include 'casino/fields.php';
 include 'options/fields.php';
-include 'options/relative_blog_main_page.php';
 define('HOST_URL', get_site_url( null, '', 'https' ));
