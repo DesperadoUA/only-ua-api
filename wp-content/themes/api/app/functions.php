@@ -41,25 +41,41 @@ function parseAmpContent($content) {
 }
 /* Post cards */
 function get_casino_card_data($arr_id) {
+    $PAYMENTS = include(ROOT_DIR.'/configs/payment.php');
     $data_posts = [];
+    $siteUrl = get_site_url();
     foreach ($arr_id as $item) {
-        $bonuses = carbon_get_post_meta($item, 'bonuses');
+        $advantagesData = carbon_get_post_meta($item, 'advantages');
+        $advantages = [];
+        if(!empty($advantagesData)) {
+            foreach ($advantagesData as $advantage) $advantages[] = $advantage['advantages'];
+        }
+        $refData = carbon_get_post_meta($item, 'ref');
+        $ref = [];
+        if(!empty($refData)) {
+            foreach ($refData as $refItem) $ref[] = $refItem['casino_ref'];
+        }
+        $paymentsData = carbon_get_post_meta($item, 'relative_pay_out');
+        $payments = [];
+        if(!empty($paymentsData)) {
+            foreach ($paymentsData as $paymentItem) $payments[] = ['thumbnail' => $siteUrl.$PAYMENTS[$paymentItem]['src']];
+        }
         $data_posts[] = [
             'id'               => $item,
             'title'            => get_the_title($item),
-            'sub_title'        => carbon_get_post_meta($item, 'sub_title'),
-            'meta_title'       => carbon_get_post_meta($item, 'meta_title'),
-            'meta_description' => carbon_get_post_meta($item, 'meta_description'),
-            'meta_keywords'    => carbon_get_post_meta($item, 'meta_keywords'),
-            'h1'               => carbon_get_post_meta($item, 'h1'),
-            'title_card_link'  => carbon_get_post_meta($item, 'title_card_link'),
-            'ref'              => carbon_get_post_meta($item, 'ref'),
+            'ref'              => $ref,
             'rating'           => carbon_get_post_meta($item, 'rating'),
+            'bonus_value'      => carbon_get_post_meta($item, 'bonus_value'),
+            'min_dep'          => carbon_get_post_meta($item, 'min_dep'),
+            'wager'            => carbon_get_post_meta($item, 'wager'),
+            'color'            => carbon_get_post_meta($item, 'color'),
+            'advantages'       => $advantages,
+            'bonuses'          => carbon_get_post_meta($item, 'bonuses'),
             'permalink'        => get_short_link($item),
             'thumbnail'        => get_the_post_thumbnail_url($item, 'full'),
-            'marker'           => carbon_get_post_meta($item, 'marker'),
-            'licensed'         => carbon_get_post_meta($item, 'licensed'),
-            'bonuses'          => $bonuses
+            'label'            => carbon_get_post_meta($item, 'marker'),
+            'payments'         => $payments,
+            'relative_vendors' => carbon_get_post_meta($item, 'relative_vendors')
         ];
     }
     return $data_posts;

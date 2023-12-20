@@ -1,8 +1,20 @@
 <?php
  return [
-    'visa' => ['title' => 'Visa'],
-    'mastercard' => ['title' => 'MasterCard'],
-    'neosurf' => ['title' => 'Neosurf'],
-    'ecoPayz' => ['title' => 'ecoPayz']
+    'visa' => [
+      'title' => 'Visa',
+      'src' => '/wp-content/uploads/2023/12/group-9.png'
+   ],
+    'mastercard' => [
+      'title' => 'MasterCard',
+      'src' => '/wp-content/uploads/2023/12/group-10.png'
+   ],
+    'neosurf' => [
+      'title' => 'Neosurf',
+      'src' => '/wp-content/uploads/2023/12/group-11.png'
+   ],
+    'ecoPayz' => [
+      'title' => 'ecoPayz',
+      'src' => '/wp-content/uploads/2023/12/group-12.png'
+   ]
  ];
 ?>

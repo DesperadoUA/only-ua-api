@@ -5,6 +5,8 @@ if($_POST['url'] === '/') {
     if(empty($response['body'])) $response['status'] = '404';
     else {
         $response['status'] = '200';
+        $arr_casino_id = get_public_post_id('casino');
+        $response['body']['casino'] = get_casino_card_data($arr_casino_id);
     }
     echo json_encode($response);
 }
