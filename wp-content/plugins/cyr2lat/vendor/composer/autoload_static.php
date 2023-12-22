@@ -4,50 +4,39 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitab59197479483050e615845d183c2e8c
+class ComposerStaticInit9c026311b5ca4c5e55b1c6e8bf85d6c9
 {
     public static $files = array (
-        '344a0f93a05b8ca362c22e39586db500' => __DIR__ . '/../..' . '/lib/polyfill-mbstring/bootstrap.php',
+        '08eca214f4d3690babeee667e1bd7ede' => __DIR__ . '/../..' . '/src/php/includes/deprecated.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'C' => 
         array (
-            'Composer\\Installers\\' => 20,
+            'CyrToLat\\' => 9,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Composer\\Installers\\' => 
+        'CyrToLat\\' => 
         array (
-            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+            0 => __DIR__ . '/../..' . '/src/php',
         ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Cyr_To_Lat\\ACF' => __DIR__ . '/../..' . '/classes/class-acf.php',
-        'Cyr_To_Lat\\Admin_Notices' => __DIR__ . '/../..' . '/classes/class-admin-notices.php',
-        'Cyr_To_Lat\\Conversion_Process' => __DIR__ . '/../..' . '/classes/background-processes/class-conversion-process.php',
-        'Cyr_To_Lat\\Conversion_Tables' => __DIR__ . '/../..' . '/classes/class-conversion-tables.php',
-        'Cyr_To_Lat\\Converter' => __DIR__ . '/../..' . '/classes/class-converter.php',
-        'Cyr_To_Lat\\KAGG\\WP_Background_Processing\\WP_Async_Request' => __DIR__ . '/../..' . '/lib/wp-background-processing/class-wp-async-request.php',
-        'Cyr_To_Lat\\KAGG\\WP_Background_Processing\\WP_Background_Process' => __DIR__ . '/../..' . '/lib/wp-background-processing/class-wp-background-process.php',
-        'Cyr_To_Lat\\Main' => __DIR__ . '/../..' . '/classes/class-main.php',
-        'Cyr_To_Lat\\Post_Conversion_Process' => __DIR__ . '/../..' . '/classes/background-processes/class-post-conversion-process.php',
-        'Cyr_To_Lat\\Requirements' => __DIR__ . '/../..' . '/classes/class-requirements.php',
-        'Cyr_To_Lat\\Settings' => __DIR__ . '/../..' . '/classes/class-settings.php',
-        'Cyr_To_Lat\\Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/../..' . '/lib/polyfill-mbstring/Mbstring.php',
-        'Cyr_To_Lat\\Term_Conversion_Process' => __DIR__ . '/../..' . '/classes/background-processes/class-term-conversion-process.php',
-        'Cyr_To_Lat\\WP_CLI' => __DIR__ . '/../..' . '/classes/class-wp-cli.php',
+        'CyrToLat\\Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/../..' . '/libs/polyfill-mbstring/Mbstring.php',
+        'CyrToLat\\WP_Background_Processing\\WP_Async_Request' => __DIR__ . '/../..' . '/libs/wp-background-processing/wp-async-request.php',
+        'CyrToLat\\WP_Background_Processing\\WP_Background_Process' => __DIR__ . '/../..' . '/libs/wp-background-processing/wp-background-process.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitab59197479483050e615845d183c2e8c::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitab59197479483050e615845d183c2e8c::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitab59197479483050e615845d183c2e8c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9c026311b5ca4c5e55b1c6e8bf85d6c9::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9c026311b5ca4c5e55b1c6e8bf85d6c9::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9c026311b5ca4c5e55b1c6e8bf85d6c9::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -1,47 +1,23 @@
-<?php return array (
-  'root' => 
-  array (
-    'pretty_version' => '4.6.4',
-    'version' => '4.6.4.0',
-    'aliases' => 
-    array (
+<?php return array(
+    'root' => array(
+        'name' => 'mihdan/cyr2lat',
+        'pretty_version' => '6.0.5',
+        'version' => '6.0.5.0',
+        'reference' => '184db776ec26bc0acf6edae3eabfec28ac67097f',
+        'type' => 'wordpress-plugin',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => false,
     ),
-    'reference' => '4117c3e807c8bed4120639cfcd1ef7f34cb2a543',
-    'name' => 'mihdan/cyr2lat',
-  ),
-  'versions' => 
-  array (
-    'composer/installers' => 
-    array (
-      'pretty_version' => 'v1.9.0',
-      'version' => '1.9.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'b93bcf0fa1fccb0b7d176b0967d969691cd74cca',
+    'versions' => array(
+        'mihdan/cyr2lat' => array(
+            'pretty_version' => '6.0.5',
+            'version' => '6.0.5.0',
+            'reference' => '184db776ec26bc0acf6edae3eabfec28ac67097f',
+            'type' => 'wordpress-plugin',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
     ),
-    'mihdan/cyr2lat' => 
-    array (
-      'pretty_version' => '4.6.4',
-      'version' => '4.6.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '4117c3e807c8bed4120639cfcd1ef7f34cb2a543',
-    ),
-    'roundcube/plugin-installer' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '*',
-      ),
-    ),
-    'shama/baton' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '*',
-      ),
-    ),
-  ),
 );

@@ -2,18 +2,20 @@
 Contributors: SergeyBiryukov, mihdan, karevn, webvitaly, kaggdesign
 Tags: cyrillic, belorussian, ukrainian, bulgarian, macedonian, georgian, kazakh, latin, l10n, russian, cyr-to-lat, cyr2lat, rustolat, slugs, translations, transliteration
 Requires at least: 5.1
-Tested up to: 5.7
-Stable tag: 4.6.4
-Requires PHP: 5.6.20
+Tested up to: 6.3
+Stable tag: 6.0.5
+Requires PHP: 7.0.0
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Converts Cyrillic characters in post, page and term slugs to Latin characters.
+Convert Non-Latin characters in post, page and term slugs to Latin characters.
 
 == Description ==
 
 Converts Cyrillic characters in post, page and term slugs to Latin characters. Useful for creating human-readable URLs.
 
 = Features =
-* The only plugin with fully editable transliteration table. Allows add/remove and edit pairs like 'Я' => 'Ya', or even 'Пиво' => 'Beer'
+* The only plugin with fully editable transliteration table. Allows to add/remove and edit pairs like 'Я' => 'Ya', or even 'Пиво' => 'Beer'
 * Converts any number of existing post, page and term slugs in background processes
 * Saves existing post and page permalinks integrity
 * Performs transliteration of attachment file names
@@ -21,11 +23,25 @@ Converts Cyrillic characters in post, page and term slugs to Latin characters. U
 * [Has many advantages over similar plugins](https://kagg.eu/en/the-benefits-of-cyr-to-lat/)
 * [Officially compatible with WPML](https://wpml.org/plugin/cyr-to-lat/)
 
-![WPML Certificate](https://ps.w.org/cyr2lat/assets/Cyr-To-Lat---WPML-Compatibility-Certificate-240x250.png)
+<img src="https://ps.w.org/cyr2lat/assets/Cyr-To-Lat---WPML-Compatibility-Certificate-240x250.png" alt="WPML Certificate" />
 
 Based on the original Rus-To-Lat plugin by Anton Skorobogatov.
 
-[](http://coderisk.com/wp/plugin/cyr2lat/RIPS-nt7iXCmzoc)
+Sponsored by [Blackfire](https://www.blackfire.io/).
+
+<img src="https://ps.w.org/cyr2lat/assets/blackfire-io_secondary_horizontal_transparent-250x62.png" alt="Blackfire Logo" />
+
+== Screenshots ==
+
+1. Tables settings page
+2. Converter settings page
+3. Block editor with transliterated slug
+4. WPML Certificate
+
+== Plugin Support ==
+
+* [Support Forum](https://wordpress.org/support/plugin/cyr2lat/)
+* [Telegram Group](https://t.me/cyr2lat)
 
 == Installation ==
 
@@ -52,32 +68,29 @@ function my_ctl_table( $table ) {
 
    return $table;
 }
-
 add_filter( 'ctl_table', 'my_ctl_table' );
 `
 
-= How can I redefine non-standard locale ? =
+= How can I redefine non-standard locale? =
 
 For instance, if your non-standard locale is uk_UA, you can redefine it to `uk` by adding the following code to your theme's `function.php` file:
 
 `
 /**
- * Use conversion table for non-standard locale.
+ * Use non-standard locale.
  *
- * @param array $table Conversion table.
+ * @param string $locale Current locale.
  *
- * @return array
+ * @return string
  */
-function my_ctl_table( $table ) {
-	if ( 'uk_UA' === get_locale() ) {
-		$settings = new Cyr_To_Lat_Settings();
-		$table    = $settings->get_option( 'uk' );
+function my_ctl_locale( $locale ) {
+	if ( 'uk_UA' === $locale ) {
+		return 'uk';
 	}
 
-	return $table;
+	return $locale;
 }
-
-add_filter( 'ctl_table', 'my_ctl_table' );
+add_filter( 'ctl_locale', 'my_ctl_locale' );
 `
 
 = How can I define own transliteration of titles? =
@@ -86,13 +99,13 @@ Add similar code to your theme's `functions.php` file:
 
 `
 /**
-* Filter title before sanitizing.
-*
-* @param string|false $result Sanitized title.
-* @param string       $title  Title.
-*
-* @return string|false
-*/
+ * Filter title before sanitizing.
+ *
+ * @param string|false $result Sanitized title.
+ * @param string       $title  Title.
+ *
+ * @return string|false
+ */
 function my_ctl_pre_sanitize_title( $result, $title ) {
 	if ( 'пиво' === $title ) {
 		return 'beer';
@@ -100,7 +113,6 @@ function my_ctl_pre_sanitize_title( $result, $title ) {
 
 	return $result;
 }
-
 add_filter( 'ctl_pre_sanitize_title', 10, 2 );
 `
 
@@ -110,13 +122,13 @@ Add similar code to your theme's `functions.php` file:
 
 `
 /**
-* Filter filename before sanitizing.
-*
-* @param string|false $result   Sanitized filename.
-* @param string       $filename Title.
-*
-* @return string|false
-*/
+ * Filter filename before sanitizing.
+ *
+ * @param string|false $result   Sanitized filename.
+ * @param string       $filename Title.
+ *
+ * @return string|false
+ */
 function my_ctl_pre_sanitize_filename( $result, $filename ) {
 	if ( 'пиво' === $filename ) {
 		return 'beer';
@@ -124,8 +136,34 @@ function my_ctl_pre_sanitize_filename( $result, $filename ) {
 
 	return $result;
 }
-
 add_filter( 'ctl_pre_sanitize_filename', 10, 2 );
+`
+
+= How can I allow the plugin to work on the frontend? =
+
+Add similar code to your theme's `functions.php` file:
+
+`
+/**
+ * Filter status allowed Cyr To Lat plugin to work.
+ *
+ * @param bool $allowed
+ *
+ * @return bool
+ */
+function my_ctl_allow( bool $allowed ): bool {
+	$uri = isset( $_SERVER['REQUEST_URI'] ) ?
+		sanitize_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) :
+		'';
+
+	if ( 0 === strpos( $uri, '/divi-comments' ) ) {
+		return true;
+	}
+
+	return $allowed;
+}
+
+add_filter( 'ctl_allow', 'my_ctl_allow' );
 `
 
 = How can I limit post types for background conversion? =
@@ -134,22 +172,21 @@ Add similar code to your theme's `functions.php` file:
 
 `
 /**
-* Filter post types allowed for background conversion.
-*
-* @param array $post_types Allowed post types.
-*
-* @return array
-*/
+ * Filter post types allowed for background conversion.
+ *
+ * @param array $post_types Allowed post types.
+ *
+ * @return array
+ */
 function my_ctl_post_types( $post_types ) {
 	return [
-	'post'          => 'post',
-	'page'          => 'page',
-	'attachment'    => 'attachment',
-	'product'       => 'product',
-	'nav_menu_item' => 'nav_menu_item',
+		'post'          => 'post',
+		'page'          => 'page',
+		'attachment'    => 'attachment',
+		'product'       => 'product',
+		'nav_menu_item' => 'nav_menu_item',
 	];
 }
-
 add_filter( 'ctl_post_types', 'my_ctl_post_types' );
 `
 
@@ -165,14 +202,132 @@ Where
   `-post_type` is list of post types,
   `-post_status` is list of post statuses.
 
+= How can I regenerate thumbnails safely? =
+
+Regeneration of thumbnails with the command `wp media regenerate` can break links in old posts as file names become transliterated.
+
+To avoid it, deactivate cyr2lat plugin during regeneration:
+
+`
+wp media regenerate --skip-plugins=cyr2lat
+`
+
 = Can I contribute? =
 
 Yes you can!
 
 * Join in on our [GitHub repository](https://github.com/mihdan/cyr2lat)
-* Join in on our [Telegram Channel](https://t.me/cyr2lat)
+* Join in on our [Telegram Group](https://t.me/cyr2lat)
 
 == Changelog ==
+
+= 6.0.5 (09.10.2023) =
+* Fixed displaying file descriptions in the Theme Editor; now in the current locale.
+
+= 6.0.4 (23.09.2023) =
+* Fixed disappeared file descriptions on the Theme File Editor page.
+
+* = 6.0.3 (29.07.2023) =
+* Fixed fatal error with Jetpack sync.
+
+= 6.0.2 (26.07.2023) =
+* Fixed fatal error in admin_footer_text().
+
+= 6.0.1 (26.07.2023) =
+* Fixed fatal error on System Info page with empty options.
+
+= 6.0.0 (26.07.2023) =
+* Dropped support of PHP 5.6. Minimum required PHP version is 7.0 now.
+* Tested with WordPress 6.3.
+* Tested with WooCommerce 7.9.
+* Added System Info tab.
+* Added filter 'ctl_allow'
+* Fixed console error when saving table data.
+* Fixed current table setting on Tables page with WPML.
+
+= 5.5.3 (15.07.2023) =
+* Tested with WooCommerce 7.8.
+* Fixed deprecation error "strpos(): Passing null to parameter" appeared in debug.log.
+
+= 5.5.2 (31.03.2023) =
+* Fixed transliteration of tags with Polylang and WPML.
+
+= 5.5.1 (21.03.2023) =
+* Fixed transliteration of attributes on WC frontend.
+
+= 5.5.0 (18.03.2023) =
+* Tested with WordPress 6.2.
+* Tested with WooCommerce 7.5.
+* Improved performance of Tables settings page.
+* Fixed showing posts by tags on the frontend.
+* Fixed showing non-transliterated cyrillic tags on the backend.
+
+= 5.4.0 (15.12.2022) =
+* Tested with WordPress 6.1 and WooCommerce 7.2.
+* Added compatibility with WC High-Performance order storage (COT) feature.
+
+= 5.3.0 (23.05.2022) =
+* Tested with WordPress 6.0 and WooCommerce 6.5.
+
+= 5.2.7 (14.02.2022) =
+* Tested with WooCommerce 6.2.
+* Added PHP 8.1 support.
+
+= 5.2.6 (25.12.2021) =
+* Revert fix made in 5.2.5 for 404 with WPML, as it created several issues on the frontend.
+* Fix again 404 on archives created with WPML before activation of cyr2lat.
+
+= 5.2.5 (19.12.2021) =
+* Tested up to WordPress 5.9 and WooCommerce 6.0.
+* Fix issue with Polylang - do not modify admin language when editing a post.
+* Fix issue with JetPack - fatal error on synchronisation.
+* Fix 404 on archives created with WPML before activation of cyr2lat.
+
+= 5.2.4 (07.09.2021) =
+* Fix issue with not showing WooCommerce variable product attributes.
+* Fix issue with Elementor and WPML, endless loop.
+
+= 5.2.3 (07.09.2021) =
+* Fix issue with WP Foro plugin - transliterate topic slug when created on frontend.
+* Fix bug with Polylang on REST request.
+
+= 5.2.2 (06.09.2021) =
+* Fix issue caused by the bug in Jetpack sync.
+* Optimize code related to WPML locale filtering.
+* Fix endless loading of a taxonomy page with WPML.
+* Fix 'nothing found' on a taxonomy page with WPML.
+
+= 5.2.1 (29.07.2021) =
+* Determine WPML language only once to improve performance.
+* Avoid notice on bad SQL request when taxonomies are empty.
+
+= 5.2.0 (27.07.2021) =
+* Add support for categories and tags in other languages with wpml.
+
+= 5.1.0 (19.07.2021) =
+* Fix issue-95 - 404 on localized terms created before plugin install.
+* Add cache flushing after batch conversion.
+* Tested with WordPress 5.8
+
+= 5.0.4 (17.04.2021) =
+* Fix bug in converter without saved options
+
+= 5.0.3 (03.04.2021) =
+* Add filter 'ctl_locale'
+* Fix translation of tabs on settings pages
+* Fix registered post types in conversion settings
+
+= 5.0.2 (27.03.2021) =
+* Fix bug creating tag with the same slug as category
+
+= 5.0.1 (22.03.2021) =
+* Fix fatal error during plugin load on some servers
+
+= 5.0.0 (18.03.2021) =
+* Introduce tabs on options page
+* Add options to select post types and statuses for background conversion
+* Make colors compatible to WP official palette
+* Fix bug with Polylang when locale is not equal to language slug
 
 = 4.6.4 (03.03.2021) =
 * Tested up to WordPress 5.7
@@ -236,7 +391,7 @@ Yes you can!
 * Tables sorted by local alphabets
 
 = 4.3.2 (29.12.2019) =
-* Fixed problems with setting of max_input_vars on some hostings
+* Fixed problems with setting of max_input_vars on some hosting
 
 = 4.3.1 (27.12.2019) =
 * Added requirement to have max_input_vars >= 5000

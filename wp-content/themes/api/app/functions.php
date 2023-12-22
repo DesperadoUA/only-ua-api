@@ -72,7 +72,7 @@ function get_casino_card_data($arr_id) {
         $advantagesData = carbon_get_post_meta($item, 'advantages');
         $refData = carbon_get_post_meta($item, 'ref');
         $paymentsData = carbon_get_post_meta($item, 'relative_pay_out');
-        $vendorsData = carbon_get_post_meta($item, 'relative_vendors');
+        $vendorsData = carbon_get_post_meta($item, 'relative_vendor');
         $data_posts[] = [
             'id'               => $item,
             'title'            => get_the_title($item),
@@ -88,7 +88,8 @@ function get_casino_card_data($arr_id) {
             'thumbnail'        => get_the_post_thumbnail_url($item, 'full'),
             'label'            => carbon_get_post_meta($item, 'marker'),
             'payments'         => paymentAdapter($paymentsData),
-            'vendors'          => vendorAdapter($vendorsData)
+            'vendors'          => vendorAdapter($vendorsData),
+            'test'             => $vendorsData
         ];
     }
     return $data_posts;
