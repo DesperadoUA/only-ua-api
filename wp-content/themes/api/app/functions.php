@@ -88,7 +88,7 @@ function get_casino_card_data($arr_id) {
             'thumbnail'        => get_the_post_thumbnail_url($item, 'full'),
             'label'            => carbon_get_post_meta($item, 'marker'),
             'payments'         => paymentAdapter($paymentsData),
-            'vendors' => vendorAdapter($vendorsData)
+            'vendors'          => vendorAdapter($vendorsData)
         ];
     }
     return $data_posts;
@@ -103,37 +103,10 @@ function get_single_casino_data($id){
         $amp_text = carbon_get_post_meta($current_data->ID, 'amp_content');
         $amp_text = empty($amp_text) ? parseAmpContent($current_data->post_content) : parseAmpContent($amp_text);
         $payments_id = carbon_get_post_meta($current_data->ID, 'relative_payment');
-        $relative_payments = [];
-        if(!empty($payments_id)) {
-            foreach ($payments_id as $item) {
-                $relative_payments[] = [
-                    'title' => get_the_title($item),
-                    'permalink' => get_short_link($item)
-                ];
-            }
-        }
-
+        $relative_payments = paymentAdapter($payments_id);
         $vendors_id = carbon_get_post_meta($current_data->ID, 'relative_vendor');
-        $relative_vendors = [];
-        if(!empty($vendors_id)) {
-            foreach ($vendors_id as $item) {
-                $relative_vendors[] = [
-                    'title' => get_the_title($item),
-                    'permalink' => get_short_link($item)
-                ];
-            }
-        }
-
-        $pay_out_id = carbon_get_post_meta($current_data->ID, 'relative_pay_out');
-        $relative_pay_out = [];
-        if(!empty($pay_out_id)) {
-            foreach ($pay_out_id as $item) {
-                $relative_pay_out[] = [
-                    'title' => get_the_title($item),
-                    'permalink' => get_short_link($item)
-                ];
-            }
-        }
+        $relative_vendors = vendorAdapter($vendors_id);
+        $refData = carbon_get_post_meta($current_data->ID, 'ref');
 
         $data_posts = [
             'id'                      => $current_data->ID,
@@ -144,31 +117,19 @@ function get_single_casino_data($id){
             'h1'                      => carbon_get_post_meta($current_data->ID, 'h1'),
             'content'                 => $current_data->post_content,
             'amp_content'             => $amp_text,
-            'ref'                     => carbon_get_post_meta($current_data->ID, 'ref'),
+            'ref'                     => refAdapter($refData),
             'bonuses'                 => carbon_get_post_meta($current_data->ID, 'bonuses'),
             'rating'                  => carbon_get_post_meta($current_data->ID, 'rating'),
             'thumbnail'               => get_the_post_thumbnail_url($current_data->ID, 'full'),
-            'sub_title'               => carbon_get_post_meta($current_data->ID, 'sub_title'),
             'min_deposit'             => carbon_get_post_meta($current_data->ID, 'min_deposit'),
             'min_payout'              => carbon_get_post_meta($current_data->ID, 'min_payout'),
             'currency'                => carbon_get_post_meta($current_data->ID, 'currency'),
-            'valuta'                  => carbon_get_post_meta($current_data->ID, 'valuta'),
-            'reviews'                 => carbon_get_post_meta($current_data->ID, 'reviews_casino'),
-            'faq_title'               => carbon_get_post_meta($current_data->ID, 'faq_title'),
-            'faq'                     => carbon_get_post_meta($current_data->ID, 'faq'),
-            'video_banner'            => carbon_get_post_meta($current_data->ID, 'video_banner'),
-            'video_iframe'            => carbon_get_post_meta($current_data->ID, 'video_iframe'),
-            'event'                   => carbon_get_post_meta($current_data->ID, 'event'),
-            'title_stycky_left_link'  => carbon_get_post_meta($current_data->ID, 'title_stycky_left_link'),
-            'title_stycky_right_link' => carbon_get_post_meta($current_data->ID, 'title_stycky_right_link'),
-            'relative_payments'       => $relative_payments,
-            'relative_vendors'        => $relative_vendors,
-            'relative_pay_out'        => $relative_pay_out,
+            'color'                   => carbon_get_post_meta($item, 'color'),
+            'payments'                => $relative_payments,
+            'label'                   => carbon_get_post_meta($item, 'marker'),
+            'vendors'                 => $relative_vendors,
             'date'                    => $current_data->post_date,
             'date_modified'           => $current_data->post_modified,
-            'how_to'                  => carbon_get_post_meta($current_data->ID, 'how_to_step'),
-            'description_site'        => get_bloginfo(),
-            'hreflang'                => get_headers_lang($current_data->ID)
         ];
         return $data_posts;
     }
