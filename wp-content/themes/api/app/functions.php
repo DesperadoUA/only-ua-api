@@ -88,7 +88,7 @@ function get_casino_card_data($arr_id) {
             'thumbnail'        => get_the_post_thumbnail_url($item, 'full'),
             'label'            => carbon_get_post_meta($item, 'marker'),
             'payments'         => paymentAdapter($paymentsData),
-            'relative_vendors' => vendorAdapter($vendorsData)
+            'vendors' => vendorAdapter($vendorsData)
         ];
     }
     return $data_posts;
