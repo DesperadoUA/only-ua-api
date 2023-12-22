@@ -2,6 +2,7 @@
 include 'meta_fields.php';
 include 'amp_content.php';
 include 'h1.php';
+include 'icon.php';
 include 'relative_payments.php';
 include 'relative_vendors.php';
 include 'relative_languages.php';
