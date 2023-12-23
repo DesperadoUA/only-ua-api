@@ -66,6 +66,29 @@ function parseAmpContent($content) {
     return $content;
 }
 /* Post cards */
+function get_main_bonus_card_data($arr_id) {
+    $data_posts = [];
+    foreach ($arr_id as $item) {
+        $refData = carbon_get_post_meta($item, 'ref');
+        $ref = refAdapter($refData);
+        $bg = carbon_get_post_meta($item, 'color');
+        $label = carbon_get_post_meta($item, 'marker');
+        $thumbnail = get_the_post_thumbnail_url($item, 'full');
+        $bonusesData = carbon_get_post_meta($item, 'bonuses');
+        foreach ($bonusesData as $itemBonus) {
+             $data_post[] = [
+                 'bg' => $bg,
+                 'label' => $label,
+                 'src' => $thumbnail,
+                 'title' => $itemBonus['bonuses_title'],
+                 'value' => $itemBonus['bonuses_value'],
+                 'desc' => $itemBonus['bonuses_sub_title'],
+                 'ref' => $ref
+             ];
+        }
+    }
+    return $data_posts;
+}
 function get_casino_card_data($arr_id) {
     $data_posts = [];
     foreach ($arr_id as $item) {

@@ -7,6 +7,8 @@ if($_POST['url'] === '/') {
         $response['status'] = '200';
         $arr_casino_id = get_public_post_id('casino');
         $response['body']['casino'] = get_casino_card_data($arr_casino_id);
+        $shuffleBonuses = shuffle(get_main_bonus_card_data($arr_casino_id));
+        $response['body']['bonuses'] = array_slice($shuffleBonuses, 0, 10);
     }
     echo json_encode($response);
 }
@@ -16,6 +18,8 @@ elseif ($_POST['url'] === 'bonuses') {
     if(empty($response['body'])) $response['status'] = '404';
     else {
         $response['status'] = '200';
+        $arr_casino_id = get_public_post_id('casino');
+        $response['body']['bonuses'] = shuffle(get_main_bonus_card_data($arr_casino_id));
     }
     echo json_encode($response);
 }
