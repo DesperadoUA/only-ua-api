@@ -8,7 +8,7 @@ if($_POST['url'] === '/') {
         $arr_casino_id = get_public_post_id('casino');
         $response['body']['casino'] = get_casino_card_data($arr_casino_id);
         $shuffleBonuses = shuffle(get_main_bonus_card_data($arr_casino_id));
-        $response['body']['bonuses'] = array_slice($shuffleBonuses, 0, 10);
+        $response['body']['bonuses'] = array_slice($shuffleBonuses, 0, NUMBER_BONUSES_MAIN_SLIDER);
     }
     echo json_encode($response);
 }

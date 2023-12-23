@@ -1,5 +1,6 @@
 <?php
 define('ROOT_DIR', __DIR__);
+define('NUMBER_BONUSES_MAIN_SLIDER', 10);
 include 'inc/helpers.php';
 include 'inc/headers.php';
 include 'inc/post_types/casino.php';
