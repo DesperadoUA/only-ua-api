@@ -5,6 +5,18 @@ function advantagesAdapter($arr) {
     foreach ($arr as $item) $data[] = $item['advantages'];
     return $data;
 }
+function currenciesAdapter($arr) {
+    $CURRENCY = include(ROOT_DIR.'/configs/currency.php');
+    $data = [];
+    foreach ($arr as $item) $data[] = ['title' => $CURRENCY[$item]['title']];
+    return $data;
+}
+function langsAdapter($arr) {
+    $LANG = include(ROOT_DIR.'/configs/languages.php');
+    $data = [];
+    foreach ($arr as $item) $data[] = ['title' => $LANG[$item]['title']];
+    return $data;
+}
 function refAdapter($arr) {
     $data = [];
     foreach ($arr as $item) $data[] = $item['casino_ref'];
@@ -14,14 +26,14 @@ function paymentAdapter($arr) {
     $siteUrl = get_site_url();
     $PAYMENTS = include(ROOT_DIR.'/configs/payment.php');
     $data = [];
-    foreach ($arr as $item) $data[] = ['thumbnail' => $siteUrl.$PAYMENTS[$item]['src']];
+    foreach ($arr as $item) $data[] = ['thumbnail' => $siteUrl.$PAYMENTS[$item]['src'], 'title' => $PAYMENTS[$item]['title']];
     return $data;
 }
 function vendorAdapter($arr) {
     $siteUrl = get_site_url();
     $VENDORS = include(ROOT_DIR.'/configs/vendors.php');
     $data = [];
-    foreach ($arr as $item) $data[] = ['thumbnail' => $siteUrl.$VENDORS[$item]['src']];
+    foreach ($arr as $item) $data[] = ['thumbnail' => $siteUrl.$VENDORS[$item]['src'], 'title' => $VENDORS[$item]['title']];
     return $data;
 }
 /* adapters */
@@ -91,6 +103,28 @@ function get_main_bonus_card_data($arr_id) {
     }
     return $data_posts;
 }
+function get_aside_bonus_card_data($arr_id) {
+    $data_posts = [];
+    foreach ($arr_id as $item) {
+        $refData = carbon_get_post_meta($item, 'ref');
+        $ref = refAdapter($refData);
+        $bg = carbon_get_post_meta($item, 'color');
+        $label = carbon_get_post_meta($item, 'marker');
+        $thumbnail = carbon_get_post_meta($item, 'icon');
+        $bonusesData = carbon_get_post_meta($item, 'bonuses');
+        foreach ($bonusesData as $itemBonus) {
+             $data_posts[] = [
+                 'bg' => $bg,
+                 'label' => $label,
+                 'src' => $thumbnail,
+                 'title' => $itemBonus['bonuses_title'],
+                 'value' => $itemBonus['bonuses_value'],
+                 'ref' => $ref
+             ];
+        }
+    }
+    return $data_posts;
+}
 function get_casino_card_data($arr_id) {
     $data_posts = [];
     foreach ($arr_id as $item) {
@@ -98,6 +132,8 @@ function get_casino_card_data($arr_id) {
         $refData = carbon_get_post_meta($item, 'ref');
         $paymentsData = carbon_get_post_meta($item, 'relative_pay_out');
         $vendorsData = carbon_get_post_meta($item, 'relative_vendor');
+        $langsData = carbon_get_post_meta($item, 'relative_languages');
+        $currencyData = carbon_get_post_meta($item, 'relative_currency');
         $data_posts[] = [
             'id'               => $item,
             'title'            => get_the_title($item),
@@ -108,12 +144,13 @@ function get_casino_card_data($arr_id) {
             'wager'            => carbon_get_post_meta($item, 'wager'),
             'color'            => carbon_get_post_meta($item, 'color'),
             'advantages'       => advantagesAdapter($advantagesData),
-            'bonuses'          => carbon_get_post_meta($item, 'bonuses'),
             'permalink'        => get_short_link($item),
             'thumbnail'        => get_the_post_thumbnail_url($item, 'full'),
             'label'            => carbon_get_post_meta($item, 'marker'),
             'payments'         => paymentAdapter($paymentsData),
-            'vendors'          => vendorAdapter($vendorsData)
+            'vendors'          => vendorAdapter($vendorsData),
+            'langs'            => langsAdapter($langsData),
+            'currency'         => currenciesAdapter($currencyData)
         ];
     }
     return $data_posts;
@@ -127,34 +164,37 @@ function get_single_casino_data($id){
     if(!empty($current_data)) {
         $amp_text = carbon_get_post_meta($current_data->ID, 'amp_content');
         $amp_text = empty($amp_text) ? parseAmpContent($current_data->post_content) : parseAmpContent($amp_text);
-        $payments_id = carbon_get_post_meta($current_data->ID, 'relative_payment');
-        $relative_payments = paymentAdapter($payments_id);
-        $vendors_id = carbon_get_post_meta($current_data->ID, 'relative_vendor');
-        $relative_vendors = vendorAdapter($vendors_id);
+        $paymentsData = carbon_get_post_meta($current_data->ID, 'relative_pay_out');
+        $vendorsData = carbon_get_post_meta($current_data->ID, 'relative_vendor');
+        $currencyData = carbon_get_post_meta($current_data->ID, 'relative_currency');
+        $langsData = carbon_get_post_meta($current_data->ID, 'relative_languages');
         $refData = carbon_get_post_meta($current_data->ID, 'ref');
 
         $data_posts = [
-            'id'                      => $current_data->ID,
-            'title'                   => $current_data->post_title,
-            'meta_title'              => carbon_get_post_meta($current_data->ID, 'meta_title'),
-            'meta_description'        => carbon_get_post_meta($current_data->ID, 'meta_description'),
-            'meta_keywords'           => carbon_get_post_meta($current_data->ID, 'meta_keywords'),
-            'h1'                      => carbon_get_post_meta($current_data->ID, 'h1'),
-            'content'                 => $current_data->post_content,
-            'amp_content'             => $amp_text,
-            'ref'                     => refAdapter($refData),
-            'bonuses'                 => carbon_get_post_meta($current_data->ID, 'bonuses'),
-            'rating'                  => carbon_get_post_meta($current_data->ID, 'rating'),
-            'thumbnail'               => get_the_post_thumbnail_url($current_data->ID, 'full'),
-            'min_deposit'             => carbon_get_post_meta($current_data->ID, 'min_deposit'),
-            'min_payout'              => carbon_get_post_meta($current_data->ID, 'min_payout'),
-            'currency'                => carbon_get_post_meta($current_data->ID, 'currency'),
-            'color'                   => carbon_get_post_meta($item, 'color'),
-            'payments'                => $relative_payments,
-            'label'                   => carbon_get_post_meta($item, 'marker'),
-            'vendors'                 => $relative_vendors,
-            'date'                    => $current_data->post_date,
-            'date_modified'           => $current_data->post_modified,
+            'id'                => $current_data->ID,
+            'title'             => $current_data->post_title,
+            'meta_title'        => carbon_get_post_meta($current_data->ID, 'meta_title'),
+            'meta_description'  => carbon_get_post_meta($current_data->ID, 'meta_description'),
+            'meta_keywords'     => carbon_get_post_meta($current_data->ID, 'meta_keywords'),
+            'h1'                => carbon_get_post_meta($current_data->ID, 'h1'),
+            'content'           => $current_data->post_content,
+            'amp_content'       => $amp_text,
+            'ref'               => refAdapter($refData),
+            'bonuses'           => get_aside_bonus_card_data([$current_data->ID]),
+            'rating'            => carbon_get_post_meta($current_data->ID, 'rating'),
+            'thumbnail'         => get_the_post_thumbnail_url($current_data->ID, 'full'),
+            'min_deposit'       => carbon_get_post_meta($current_data->ID, 'min_deposit'),
+            'min_payout'        => carbon_get_post_meta($current_data->ID, 'min_payout'),
+            'currencies'        => currenciesAdapter($currencyData),
+            'languages'         => langsAdapter($langsData),
+            'color'             => carbon_get_post_meta($current_data->ID, 'color'),
+            'payments'          => paymentAdapter($paymentsData),
+            'label'             => carbon_get_post_meta($current_data->ID, 'marker'),
+            'vendors'           => vendorAdapter($vendorsData),
+            'date'              => $current_data->post_date,
+            'date_modified'     => $current_data->post_modified,
+            'hreflang'          => get_headers_lang($current_data->ID),
+            'games'             => [],
         ];
         return $data_posts;
     }

@@ -8,6 +8,6 @@ function icon() {
     Container::make( 'post_meta', __( 'Icon' ) )
     ->show_on_post_type($arrPostTypes)
     ->add_fields(array(
-        Field::make('image', 'icon', 'Icon')
+        Field::make('image', 'icon', 'Icon')->set_value_type( 'url' )
     ));
 }

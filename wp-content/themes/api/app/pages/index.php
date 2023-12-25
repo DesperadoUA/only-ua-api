@@ -41,7 +41,6 @@ elseif ($_POST['url'] === 'search') {
 	$post_args = array(
 		'numberposts'=>'-1',
 		'post_type'=>array('casino'),
-
 		's'=>$search_world
 	);
 	$data = [];

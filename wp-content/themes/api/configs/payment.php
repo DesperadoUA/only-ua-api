@@ -13,7 +13,7 @@
       'src' => '/wp-content/uploads/2023/12/group-11.png'
    ],
     'ecoPayz' => [
-      'title' => 'ecoPayz',
+      'title' => 'EcoPayz',
       'src' => '/wp-content/uploads/2023/12/group-12.png'
    ]
  ];
