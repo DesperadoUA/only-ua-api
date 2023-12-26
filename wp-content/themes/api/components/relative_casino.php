@@ -3,7 +3,7 @@ use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
 add_action( 'carbon_fields_register_fields', 'relative_casino' );
-function relative_casino() {
+function relative_casino():void {
     $arrPostTypes = ['game'];
     $posts = get_posts( array(
         'numberposts' => -1,

@@ -3,7 +3,7 @@ use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
 add_action( 'carbon_fields_register_fields', 'relative_currency' );
-function relative_currency() {
+function relative_currency():void {
     $arrPostTypes = ['casino'];
     $currency = include(ROOT_DIR.'/configs/currency.php');
     $data = mapConfigForRelative($currency);

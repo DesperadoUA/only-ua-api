@@ -3,7 +3,7 @@ use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
 add_action('carbon_fields_register_fields', 'casino_fields');
-function casino_fields() {
+function casino_fields():void {
     $arrPostTypes = ['casino'];
     /*--------------------------Add fields on posts----------------------------------------*/
     Container::make('post_meta', 'Fields')

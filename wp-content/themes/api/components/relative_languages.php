@@ -3,7 +3,7 @@ use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
 add_action( 'carbon_fields_register_fields', 'relative_languages' );
-function relative_languages() {
+function relative_languages():void {
     $arrPostTypes = ['casino'];
     $languages = include(ROOT_DIR.'/configs/languages.php');
     $data = mapConfigForRelative($languages);

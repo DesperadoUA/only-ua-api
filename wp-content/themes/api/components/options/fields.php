@@ -3,7 +3,7 @@ use Carbon_Fields\Container;
 use Carbon_Fields\Field;
 
 add_action( 'carbon_fields_register_fields', 'crb_attach_theme_options' );
-function crb_attach_theme_options() {
+function crb_attach_theme_options():void {
     Container::make( 'theme_options', __( 'Мои настройки' ) )
         ->add_fields(array(
             Field::make('text', 'main_page_text', 'Текст в баннере главной страницы'),
