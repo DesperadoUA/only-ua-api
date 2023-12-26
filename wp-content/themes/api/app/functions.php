@@ -132,7 +132,7 @@ function get_casino_card_data($arr_id) {
         $refData = carbon_get_post_meta($item, 'ref');
         $paymentsData = carbon_get_post_meta($item, 'relative_pay_out');
         $vendorsData = carbon_get_post_meta($item, 'relative_vendor');
-        $langsData = carbon_get_post_meta($item, 'relative_languages');
+        $languagesData = carbon_get_post_meta($item, 'relative_languages');
         $currencyData = carbon_get_post_meta($item, 'relative_currency');
         $data_posts[] = [
             'id'               => $item,
@@ -149,7 +149,7 @@ function get_casino_card_data($arr_id) {
             'label'            => carbon_get_post_meta($item, 'marker'),
             'payments'         => paymentAdapter($paymentsData),
             'vendors'          => vendorAdapter($vendorsData),
-            'langs'            => langsAdapter($langsData),
+            'langs'            => langsAdapter($languagesData),
             'currency'         => currenciesAdapter($currencyData)
         ];
     }
@@ -167,7 +167,7 @@ function get_single_casino_data($id){
         $paymentsData = carbon_get_post_meta($current_data->ID, 'relative_pay_out');
         $vendorsData = carbon_get_post_meta($current_data->ID, 'relative_vendor');
         $currencyData = carbon_get_post_meta($current_data->ID, 'relative_currency');
-        $langsData = carbon_get_post_meta($current_data->ID, 'relative_languages');
+        $languagesData = carbon_get_post_meta($current_data->ID, 'relative_languages');
         $refData = carbon_get_post_meta($current_data->ID, 'ref');
 
         $data_posts = [
@@ -186,7 +186,7 @@ function get_single_casino_data($id){
             'min_deposit'       => carbon_get_post_meta($current_data->ID, 'min_deposit'),
             'min_payout'        => carbon_get_post_meta($current_data->ID, 'min_payout'),
             'currencies'        => currenciesAdapter($currencyData),
-            'languages'         => langsAdapter($langsData),
+            'languages'         => langsAdapter($languagesData),
             'color'             => carbon_get_post_meta($current_data->ID, 'color'),
             'payments'          => paymentAdapter($paymentsData),
             'label'             => carbon_get_post_meta($current_data->ID, 'marker'),
